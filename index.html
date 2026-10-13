@@ -295,6 +295,35 @@ nav a{flex:0 0 auto}
   nav a:not(.on):not(:hover):not(:focus-visible)::after{transform:scaleX(0)}
   @media (hover:none){nav a:hover{transform:none;background:var(--panel);color:var(--mute);border-color:var(--line)}nav a.on:hover{background:var(--p2);color:var(--ink);border-color:var(--acc)}nav a:hover:after{transform:scaleX(0)}nav a.on:hover:after{transform:scaleX(1)}}
 </style>
+<style id="phone-fix-v224">
+/* Grid tracks must be allowed to shrink, otherwise wide children (SVG diagram) widen the whole page */
+.case{grid-template-columns:minmax(0,1fr)}
+.case>*,.dash>*,.w>*{min-width:0}
+body{overflow-x:clip}
+@media(max-width:760px){
+  .dg{-webkit-overflow-scrolling:touch}
+  .dg svg{min-width:520px}
+  /* Wider reading column: .w already pads 22px, so drop the extra 18px section padding */
+  section{padding-inline:0;padding-block:26px}
+  .w{padding-inline:16px}
+  h1{font-size:clamp(34px,10.5vw,48px)}
+  .pn,.card{padding:16px}
+  /* Floating theme / language buttons: smaller, so they hide less content */
+  #fabw{right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));gap:8px}
+  #fab,#thm{width:48px;height:44px;font-size:12px;border-radius:12px;opacity:.92}
+  #thm{font-size:17px}
+  #menu button{padding:12px 18px}
+  /* Comfortable tap targets */
+  .tabs button{padding:10px 12px;min-height:40px}
+  .career-chart-panel .tabs{gap:2px}
+  .cta a,.lk a{padding:12px 14px}
+  #contact a{display:inline-block;padding-block:8px}
+  footer{padding-bottom:90px}
+}
+@media(max-width:380px){.w{padding-inline:12px}.pill{font-size:13px}}
+</style>
+
+</style>
 </head>
 <body>
 <nav aria-label="Navigation principale"><div class="w">
@@ -577,11 +606,12 @@ pl.forEach(function(p,i){p.onclick=function(){pick(i);cycle()}});
 var nav=document.querySelector('nav');
 var links=[].slice.call(document.querySelectorAll('nav a[href^="#"]'));
 var navTargets=links.map(function(a){return {link:a,target:document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))}}).filter(function(x){return !!x.target});
-function setActiveLink(link){links.forEach(function(a){var active=a===link;a.classList.toggle('on',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')})}
+function setActiveLink(link){links.forEach(function(a){var active=a===link;a.classList.toggle('on',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});var sc=nav&&nav.querySelector('.w');if(link&&sc&&sc.scrollWidth>sc.clientWidth+2){var t=link.offsetLeft-(sc.clientWidth-link.offsetWidth)/2;try{sc.scrollTo({left:t,behavior:'smooth'})}catch(e){sc.scrollLeft=t}}}
 function pageY(){return window.scrollY||document.documentElement.scrollTop}
 function syncActiveLink(){
   if(navLock)return;
   var y=pageY(),line=y+(nav?nav.getBoundingClientRect().height:0)+28;
+  if(y<60){setActiveLink(null);return}
   var items=navTargets.map(function(item){return {link:item.link,top:item.target.getBoundingClientRect().top+y}}).sort(function(p,q){return p.top-q.top});
   if(!items.length)return;
   var active=items[0];
