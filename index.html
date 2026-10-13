@@ -41,7 +41,7 @@ h1{font:500 clamp(40px,7.2vw,86px)/1.02 var(--d);letter-spacing:-.025em;margin:1
 h3{font:500 20px/1.2 var(--d);margin:0 0 8px;letter-spacing:-.01em}
 .kpi{display:flex;flex-direction:column;gap:6px;justify-content:center}.kpi b{font:500 clamp(28px,4vw,44px)/1 var(--d)}.kpi span{font:400 13px var(--s);color:var(--mute)}
 .tabs{display:flex;gap:4px;flex-wrap:wrap}.tabs button{background:none;border:0;color:var(--mute);font:500 13px var(--s);padding:6px 10px;border-radius:10px;cursor:pointer}.tabs button:hover{color:var(--ink)}.tabs button.on{color:var(--ink);background:var(--p2);box-shadow:inset 0 -2px 0 var(--acc)}
-.chart,.lbw,.hmw{position:relative}.chart svg{width:100%;height:auto;display:block}
+.chart,.lbw,.hmw{position:relative}.chart{width:100%;max-width:820px;margin-inline:auto}.chart svg{width:100%;height:auto;display:block;margin-inline:auto}.chart .lgd{justify-content:center}
 .bar{transform-box:fill-box;transform-origin:50% 100%;animation:growY .75s cubic-bezier(.2,.8,.2,1) both;transition:opacity .25s}.bar.dim{opacity:.16}@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 .cum{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:draw 2s .3s ease forwards}@keyframes draw{to{stroke-dashoffset:0}}
 .ax{font:400 11px var(--m);fill:var(--mute)}
@@ -196,13 +196,112 @@ html[dir="rtl"] section h2:after{transform-origin:right}
 @media(max-width:760px){body:before{background-size:36px 36px;opacity:.08}header.hero:before{width:95vw;right:-35vw;top:0}header.hero:after{right:5%;top:5%;opacity:.55}.card:hover,.pn:hover,.gal figure:hover,.kp>div:hover{transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){body:before,header.hero:before,header.hero:after,.led:after,.case-status:before{animation:none!important}#reading-progress span{box-shadow:none}.rv{filter:none!important;transform:none!important}.card,.pn,.gal figure,.kp>div,.pill,.cta a,.cta button{will-change:auto}}
 
+
+/* Final layout refinement: keep the career chart centered in the full content area. */
+header.hero .w{align-items:stretch}
+header.hero .w>.career-chart-panel{grid-column:1/-1;justify-self:center;width:100%;max-width:1120px;min-width:0}
+.career-chart-panel .ct{justify-content:center;text-align:center;align-items:center;flex-direction:column}
+.career-chart-panel .ct>div{width:100%;text-align:center}
+.career-chart-panel .tabs{justify-content:center;max-width:100%;flex-wrap:wrap}
+.career-chart-panel .chart{width:100%;max-width:900px;margin-inline:auto;display:block;float:none;justify-self:center}
+.career-chart-panel .chart svg{display:block;width:100%;max-width:900px;height:auto;margin-left:auto;margin-right:auto}
+nav .w{justify-content:flex-start;padding-inline:clamp(12px,2vw,28px);gap:8px}
+nav a{flex:0 0 auto}
+@media(max-width:1180px){nav a.opt{display:inline-flex}}
+@media(max-width:760px){nav .w{justify-content:flex-start;height:58px;gap:6px}nav a{padding:8px 10px;font-size:12px}.career-chart-panel{padding:14px}.career-chart-panel .chart{overflow-x:auto}.career-chart-panel .chart svg{min-width:640px}}
+
+/* Requested refinement: smaller centered portrait and centered desktop navigation. */
+nav .w{
+  width:max-content;
+  max-width:100%;
+  margin-inline:auto;
+  justify-content:center;
+  padding-inline:16px;
+  gap:8px;
+}
+nav a{flex:0 0 auto}
+.prof .ph{
+  width: min(78%, 250px);
+  max-width:250px;
+  aspect-ratio:4/4.3;
+  align-self:center;
+  margin-inline:auto;
+}
+.prof .tag{align-self:center;text-align:center;justify-content:center}
+@media(max-width:760px){
+  nav .w{width:100%;max-width:100%;margin-inline:0;justify-content:flex-start;padding-inline:12px;overflow-x:auto}
+  .prof .ph{width:min(70%,220px);max-width:220px}
+}
+
+</style>
+<style id="final-layout-refinement">
+
+/* Final refinement: reduce portrait size and center the navigation as a group. */
+@media (min-width: 761px) {
+  nav .w {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 64px;
+    padding: 10px 18px;
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+  nav a { flex: 0 0 auto; }
+}
+@media (max-width: 760px) {
+  nav .w {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-inline: 14px;
+    box-sizing: border-box;
+  }
+}
+.prof .ph {
+  width: min(62%, 205px);
+  max-width: 205px;
+  aspect-ratio: 4 / 4.3;
+  align-self: center;
+  margin-inline: auto;
+}
+.prof .ph img { width: 100%; height: 100%; object-fit: cover; }
+
+</style>
+
+<style id="navigation-bug-fix">
+  /* Keep anchor destinations clear of the sticky navigation. */
+  section[id], #lang, #profil, #logi, #qual, #exp, #proj, #case, #form, #cert, #extra, #contact { scroll-margin-top: 88px; }
+  /* The underline belongs only to the active/hovered/focus-visible item itself. */
+  nav a.on { border-color: var(--acc); }
+  nav a.on::after { transform: scaleX(1); }
+  nav a:focus:not(:focus-visible)::after { transform: scaleX(0); }
+  nav a:focus:not(:focus-visible) { outline: none; }
+  @media (max-width: 760px) { section[id], #lang { scroll-margin-top: 78px; } }
+</style>
+<style id="nav-glow-fix-v223">
+  /* Only the item under the pointer / the active item shows the underline. Touch devices get no sticky :hover glow. */
+  nav a:after{transition:transform 260ms var(--motion-ease)}
+  nav a:not(.on):not(:hover):not(:focus-visible)::after{transform:scaleX(0)}
+  @media (hover:none){nav a:hover{transform:none;background:var(--panel);color:var(--mute);border-color:var(--line)}nav a.on:hover{background:var(--p2);color:var(--ink);border-color:var(--acc)}nav a:hover:after{transform:scaleX(0)}nav a.on:hover:after{transform:scaleX(1)}}
 </style>
 </head>
 <body>
-<nav><div class="w">
+<nav aria-label="Navigation principale"><div class="w">
 <a href="#profil"><span class="fr">Profil</span><span class="en">Profile</span></a>
-<a class="opt" href="#comp"><span class="fr">Compétences</span><span class="en">Skills</span></a>
-<a class="opt" href="#logi"><span class="fr">Logiciels</span><span class="en">Software</span></a>
+<a href="#lang"><span class="fr">Langues</span><span class="en">Languages</span></a>
+<a href="#comp"><span class="fr">Domaines de compétences</span><span class="en">Core competencies</span></a>
+<a class="opt" href="#logi"><span class="fr">Logiciels &amp; outils</span><span class="en">Software &amp; tools</span></a>
 <a class="opt" href="#qual"><span class="fr">Qualité</span><span class="en">Quality</span></a>
 <a href="#exp"><span class="fr">Expériences</span><span class="en">Experience</span></a>
 <a class="opt" href="#proj"><span class="fr">Projets</span><span class="en">Projects</span></a>
@@ -210,7 +309,6 @@ html[dir="rtl"] section h2:after{transform-origin:right}
 <a class="opt" href="#form"><span class="fr">Formation</span><span class="en">Education</span></a>
 <a href="#cert"><span class="fr">Certificats</span><span class="en">Certificates</span></a>
 <a class="opt" href="#extra"><span class="fr">Activités</span><span class="en">Activities</span></a>
-<a class="opt" href="#lang"><span class="fr">Langues</span><span class="en">Languages</span></a>
 <a href="#contact"><span class="fr">Contact</span><span class="en">Contact</span></a>
 </div></nav>
 
@@ -221,7 +319,7 @@ html[dir="rtl"] section h2:after{transform-origin:right}
 <div class="pills"><button class="pill" type="button"><span class="fr">Expertise Technique et Conception Avancée</span><span class="en">Technical Expertise &amp; Advanced Design</span></button><button class="pill" type="button"><span class="fr">Innovation, Recherche et Développement Industriel</span><span class="en">Innovation, Research &amp; Industrial Development</span></button><button class="pill" type="button"><span class="fr">Management et Gestion de Projets Stratégiques</span><span class="en">Management &amp; Strategic Project Delivery</span></button><button class="pill" type="button"><span class="fr">Pilotage des Opérations et Exploitation</span><span class="en">Operations Management &amp; Plant Exploitation</span></button></div><div class="ptags" id="ptags"></div>
 <div class="dash">
 <div class="pn c3 kpi"><b>Six Sigma</b><span class="fr">Advanced certifié</span><span class="en">Advanced certified</span></div><div class="pn c3 kpi"><b>4</b><span class="fr">secteurs industriels</span><span class="en">industry sectors</span></div><div class="pn c3 kpi"><b>13</b><span class="fr">mois de stages</span><span class="en">months of internships</span></div><div class="pn c3 kpi"><b>6</b><span class="fr">langues</span><span class="en">languages</span></div>
-<div class="pn c8"><div class="ct"><div><h3><span class="fr">Parcours &amp; apprentissage continu</span><span class="en">Career path &amp; continuous learning</span></h3><small><span class="fr">Formations, stages, engagements et 16 certificats</span><span class="en">Education, internships, activities and 16 certificates</span></small></div><div class="tabs" id="tabs"></div></div><div class="chart" id="chart"></div></div>
+<div class="pn c8 career-chart-panel"><div class="ct"><div><h3><span class="fr">Parcours &amp; apprentissage continu</span><span class="en">Career path &amp; continuous learning</span></h3><small><span class="fr">Formations, stages, engagements et 16 certificats</span><span class="en">Education, internships, activities and 16 certificates</span></small></div><div class="tabs" id="tabs"></div></div><div class="chart" id="chart"></div></div>
 <div class="pn c4 prof"><div class="ph" id="ph" aria-label="Photo">MAM</div><div class="tag"><i class="led"></i><span class="fr">Disponible — Casablanca · prêt à me relocaliser</span><span class="en">Available — Casablanca · open to relocating</span></div><div class="cta"><a href="#contact"><span class="fr">Me contacter</span><span class="en">Contact me</span></a><a href="#exp"><span class="fr">Voir mes expériences</span><span class="en">See my experience</span></a></div><div class="lk" id="lk"></div></div>
 <div class="pn c4" id="lang"><div class="ct"><div><h3><span class="fr">Langues</span><span class="en">Languages</span></h3><small><span class="fr">6 langues</span><span class="en">6 languages</span></small></div></div><div class="lbw"><div class="lb" id="lb"></div></div></div>
 <div class="pn c4"><div class="ct"><div><h3><span class="fr">Logiciels &amp; outils</span><span class="en">Software &amp; tools</span></h3><small id="hmc"></small></div></div><div class="hmw"><div class="hm" id="hm"></div></div></div>
@@ -472,9 +570,46 @@ var TG=[['PLC','SCADA','Motion control','CATIA V5'],['IIoT','FPGA','Industry 4.0
 function pick(i){pi=i;pl.forEach(function(p,j){p.classList.remove('on');if(j===i){void p.offsetWidth;p.classList.add('on')}});var e=document.getElementById('ptags');e.innerHTML=TG[i].map(function(t,k){return '<span style="animation-delay:'+(k*70)+'ms">'+t+'</span>'}).join('')}
 function cycle(){clearInterval(pt);if(!rm)pt=setInterval(function(){pick((pi+1)%pl.length)},3600)}
 pl.forEach(function(p,i){p.onclick=function(){pick(i);cycle()}});
-/* ---- nav highlight ---- */
-var links=[].slice.call(document.querySelectorAll('nav a'));
-if('IntersectionObserver' in window){var so=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){var id='#'+x.target.id;links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')===id)})}})},{rootMargin:'-35% 0px -60% 0px'});document.querySelectorAll('section[id],#lang').forEach(function(s){so.observe(s)})}
+/* ---- reliable navigation state ----
+   The previous IntersectionObserver could process several intersecting sections
+   in one batch and leave a different navigation item highlighted after a click.
+   Resolve the active link from the single section nearest the sticky-nav reading line. */
+var nav=document.querySelector('nav');
+var links=[].slice.call(document.querySelectorAll('nav a[href^="#"]'));
+var navTargets=links.map(function(a){return {link:a,target:document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)))}}).filter(function(x){return !!x.target});
+function setActiveLink(link){links.forEach(function(a){var active=a===link;a.classList.toggle('on',active);if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')})}
+function pageY(){return window.scrollY||document.documentElement.scrollTop}
+function syncActiveLink(){
+  if(navLock)return;
+  var y=pageY(),line=y+(nav?nav.getBoundingClientRect().height:0)+28;
+  var items=navTargets.map(function(item){return {link:item.link,top:item.target.getBoundingClientRect().top+y}}).sort(function(p,q){return p.top-q.top});
+  if(!items.length)return;
+  var active=items[0];
+  items.forEach(function(it){if(it.top<=line)active=it});
+  /* Bottom of the page: sections that can never reach the reading line must still be selectable. */
+  var atBottom=window.innerHeight+y>=document.documentElement.scrollHeight-4;
+  if(atBottom){items.forEach(function(it){if(it.top<y+window.innerHeight-120)active=it})}
+  setActiveLink(active.link);
+}
+var navSyncQueued=false;
+function queueNavSync(){if(navSyncQueued)return;navSyncQueued=true;window.requestAnimationFrame(function(){navSyncQueued=false;syncActiveLink()})}
+/* A click locks the highlight on the clicked item while the smooth scroll runs,
+   so items passed on the way never flash. The lock ends when scrolling settles
+   or the visitor takes over (wheel / touch / keyboard). */
+var navLock=false,navLockTimer=null;
+function releaseNavLock(){navLock=false;clearTimeout(navLockTimer)}
+function holdNavLock(){clearTimeout(navLockTimer);navLockTimer=setTimeout(releaseNavLock,1200)}
+var navLockCap=null;
+var navLockEl=null;
+window.addEventListener('scrollend',function(){if(!navLock)return;var atBottom=window.innerHeight+pageY()>=document.documentElement.scrollHeight-4;var d=navLockEl?Math.abs(navLockEl.getBoundingClientRect().top-88):0;if(atBottom||d<40)releaseNavLock()});
+links.forEach(function(link){
+  link.addEventListener('click',function(){navLock=true;navLockEl=document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1)));clearTimeout(navLockCap);navLockCap=setTimeout(releaseNavLock,3500);setActiveLink(link);holdNavLock();if(document.activeElement===link&&link.blur)link.blur()});
+});
+['wheel','touchstart','keydown','mousedown'].forEach(function(ev){window.addEventListener(ev,function(e){if(navLock&&!(e.target&&e.target.closest&&e.target.closest('nav a')))releaseNavLock()},{passive:true})});
+window.addEventListener('scroll',function(){if(navLock){holdNavLock();return}queueNavSync()},{passive:true});
+window.addEventListener('resize',queueNavSync,{passive:true});
+window.addEventListener('hashchange',function(){var h=decodeURIComponent((location.hash||'').slice(1));var l=links.filter(function(a){return a.getAttribute('href')==='#'+h})[0];if(l){navLock=true;setActiveLink(l);holdNavLock()}else queueNavSync()});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',queueNavSync,{once:true});else queueNavSync();
 function render(){tabs();legend();langs();hmc()}
 buildChart();heat();render();pick(0);cycle();hot(0);
 if(!rm){setInterval(function(){if(!paused)hot((hi+1)%cells.length)},1500);setInterval(function(){nd.forEach(function(n,i){n.classList.toggle('on',i===ni%nd.length)});ni++},1200)}
