@@ -131,17 +131,6 @@ Finite-state-machine ATM controller in **VHDL**, implemented on a Cyclone III wi
 
 ---
 
-## 📈 GitHub stats
-
-<div align="center">
-
-![Stats](https://github-readme-stats.vercel.app/api?username=Mouhdi-git&show_icons=true&theme=tokyonight&hide_border=true)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Mouhdi-git&layout=compact&theme=tokyonight&hide_border=true)
-
-</div>
-
----
-
 ## 🤝 Let's connect
 
 I'm open to **automation, controls, and industrial digitalization** roles, and happy to **relocate**.
