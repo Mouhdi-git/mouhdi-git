@@ -27,7 +27,7 @@ My goal: **optimization → automation → design → industry of the future.** 
 
 ## 🚀 Featured work
 
-### 💊 Retrofit of a pharmaceutical blister machine (Noack DPN 760) · *Sothema, 2026*
+### 💊 Retrofit of a pharmaceutical blister machine
 Final-year project in a GMP plant: **5 out of 5 audited components were obsolete**, with no spare parts and frequent micro-stops.
 
 - Replaced the B&R / Romaco / Eurotherm stack with a **three-level EtherCAT architecture** (PLC, HMI, servo drive)
