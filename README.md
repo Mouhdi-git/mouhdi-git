@@ -38,7 +38,7 @@ Final-year project in a GMP plant: **5 out of 5 audited components were obsolete
 | Metric | Result *(validated offline)* |
 |---|---|
 | Format change time | **30–45 min → 2–3 min** |
-| E-Cam accuracy | **±1.5°** (target ±2°) |
+| E-Cam accuracy | **± 1.5°** (target ±2°) |
 | Restart without homing | **45 s** |
 | Non-conformity detection | **100 %** |
 
